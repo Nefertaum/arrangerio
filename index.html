@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arrangerio</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="header">
+        <div class="header-left">
+          <span class="logo">&#9835; Arrangerio</span>
+          <input
+            type="text"
+            id="song-title"
+            class="song-title-input"
+            value="Untitled Song"
+            spellcheck="false"
+          />
+        </div>
+        <div class="header-right">
+          <span class="total-bars-label"
+            >Length: <strong id="total-bars">0</strong> bars</span
+          >
+          <button
+            id="save-project-btn"
+            class="btn"
+            title="Save project to JSON"
+          >
+            Save Project
+          </button>
+          <button
+            id="load-project-btn"
+            class="btn"
+            title="Load project from JSON"
+          >
+            Load Project
+          </button>
+          <button
+            id="export-image-btn"
+            class="btn"
+            title="Export arrangement to PNG"
+          >
+            Export PNG
+          </button>
+          <button id="play-btn" class="btn btn-play" title="Play / Stop">
+            &#9654;
+          </button>
+          <button
+            id="clear-btn"
+            class="btn btn-danger"
+            title="Clear all tracks"
+          >
+            Clear All
+          </button>
+        </div>
+      </header>
+
+      <main class="main">
+        <aside class="sidebar">
+          <h2 class="sidebar-title">Phrase Types</h2>
+          <div class="palette">
+            <div
+              class="palette-item"
+              draggable="true"
+              data-type="Intro"
+              data-color="#6c5ce7"
+            >
+              Intro
+            </div>
+            <div
+              class="palette-item"
+              draggable="true"
+              data-type="Verse"
+              data-color="#00b894"
+            >
+              Verse
+            </div>
+            <div
+              class="palette-item"
+              draggable="true"
+              data-type="Pre-Chorus"
+              data-color="#fdcb6e"
+            >
+              Pre-Chorus
+            </div>
+            <div
+              class="palette-item"
+              draggable="true"
+              data-type="Chorus"
+              data-color="#e17055"
+            >
+              Chorus
+            </div>
+            <div
+              class="palette-item"
+              draggable="true"
+              data-type="Bridge"
+              data-color="#74b9ff"
+            >
+              Bridge
+            </div>
+            <div
+              class="palette-item"
+              draggable="true"
+              data-type="Solo"
+              data-color="#fd79a8"
+            >
+              Solo
+            </div>
+            <div
+              class="palette-item"
+              draggable="true"
+              data-type="Break"
+              data-color="#b2bec3"
+            >
+              Break
+            </div>
+            <div
+              class="palette-item"
+              draggable="true"
+              data-type="Outro"
+              data-color="#a29bfe"
+            >
+              Outro
+            </div>
+          </div>
+
+          <div class="sidebar-divider"></div>
+
+          <h2 class="sidebar-title">Add Track</h2>
+          <div class="track-presets">
+            <button class="track-preset" data-name="Drums" data-color="#e17055">
+              Drums
+            </button>
+            <button class="track-preset" data-name="Bass" data-color="#6c5ce7">
+              Bass
+            </button>
+            <button
+              class="track-preset"
+              data-name="Guitar"
+              data-color="#00b894"
+            >
+              Guitar
+            </button>
+            <button class="track-preset" data-name="Keys" data-color="#f39c12">
+              Keys
+            </button>
+            <button
+              class="track-preset"
+              data-name="Vocals"
+              data-color="#fd79a8"
+            >
+              Vocals
+            </button>
+            <button class="track-preset" data-name="FX" data-color="#74b9ff">
+              FX
+            </button>
+          </div>
+          <div class="quick-add">
+            <input
+              type="text"
+              id="track-name"
+              class="qa-input"
+              placeholder="Instrument name"
+            />
+            <input
+              type="color"
+              id="track-color"
+              class="qa-color"
+              value="#0984e3"
+              title="Pick track color"
+            />
+            <button id="track-add" class="btn btn-primary">+ Add Track</button>
+          </div>
+
+          <div class="sidebar-divider"></div>
+
+          <h2 class="sidebar-title">Add Phrase</h2>
+          <div class="quick-add">
+            <select id="phrase-track" class="qa-input"></select>
+            <input
+              type="text"
+              id="phrase-name"
+              class="qa-input"
+              placeholder="Phrase name"
+            />
+            <input
+              type="number"
+              id="phrase-bars"
+              class="qa-input"
+              min="1"
+              max="128"
+              value="8"
+              placeholder="Bars"
+            />
+            <input
+              type="color"
+              id="phrase-color"
+              class="qa-color"
+              value="#0984e3"
+              title="Pick phrase color"
+            />
+            <button id="phrase-add" class="btn btn-primary">
+              + Add Phrase
+            </button>
+          </div>
+
+          <div class="sidebar-divider"></div>
+
+          <h2 class="sidebar-title">Legend</h2>
+          <p class="legend-hint">
+            Add multiple instrument rows.<br />Each row has its own phrase
+            blocks and bar lengths.<br />Drag phrase types into a track, click
+            blocks to edit, drag blocks to reorder or move between tracks.
+          </p>
+        </aside>
+
+        <section class="timeline-wrapper">
+          <div class="tracks-board">
+            <div class="labels-column" id="labels-column">
+              <div class="labels-spacer"></div>
+              <div class="label-empty" id="label-empty">No tracks yet</div>
+            </div>
+
+            <div class="tracks-viewport" id="tracks-viewport">
+              <div class="tracks-canvas" id="tracks-canvas">
+                <div class="bar-ruler" id="bar-ruler"></div>
+                <div class="playhead-container" id="playhead-container">
+                  <div class="playhead" id="playhead"></div>
+                </div>
+                <div class="tracks-lanes" id="tracks-lanes"></div>
+                <div class="timeline-empty-hint" id="empty-hint">
+                  Add a track, then drop phrase blocks into it.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-panel" id="detail-panel" style="display: none">
+            <div class="detail-header">
+              <span class="detail-title">Edit Phrase</span>
+              <button class="detail-close" id="detail-close">&#10005;</button>
+            </div>
+            <label>
+              Track
+              <input
+                type="text"
+                id="edit-track"
+                class="detail-input"
+                readonly
+              />
+            </label>
+            <label>
+              Name
+              <input type="text" id="edit-name" class="detail-input" />
+            </label>
+            <label>
+              Bars
+              <input
+                type="number"
+                id="edit-bars"
+                class="detail-input"
+                min="1"
+                max="128"
+              />
+            </label>
+            <label>
+              Color
+              <input
+                type="color"
+                id="edit-color"
+                class="detail-input detail-color"
+              />
+            </label>
+            <div class="detail-actions">
+              <button class="btn btn-primary" id="detail-save">Save</button>
+              <button class="btn btn-danger" id="detail-delete">Delete</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <input
+      id="project-file-input"
+      type="file"
+      accept="application/json,.json"
+      hidden
+    />
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
